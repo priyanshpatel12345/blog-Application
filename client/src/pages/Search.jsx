@@ -11,17 +11,19 @@ export default function Search() {
     category: "uncategorized",
   });
 
+  console.log(sidebar);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  // console.log(posts);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
-    const searchTermFromUrl = urlParams.get("searchTerm") || "";
-    const sortFromUrl = urlParams.get("sort") || "desc";
-    const categoryFromUrl = urlParams.get("category") || "uncategorized";
+    const searchTermFromUrl = urlParams.get("searchTerm");
+    const sortFromUrl = urlParams.get("sort");
+    const categoryFromUrl = urlParams.get("category");
 
     if (searchTermFromUrl || sortFromUrl || categoryFromUrl) {
       setSideBar({
@@ -89,10 +91,11 @@ export default function Search() {
     urlParams.set("startIndex", startIndex);
     const searchQuery = urlParams.toString();
     const res = await fetch(`/api/post/getposts?${searchQuery}`);
+    const data = await res.json();
+
     if (!res.ok) {
       return;
     } else {
-      const data = await res.json();
       setPosts([...posts, ...data.posts]);
       if (data.posts.length === 9) {
         setShowMore(true);
@@ -120,7 +123,7 @@ export default function Search() {
           </div>
 
           <div className="flex items-center gap-2">
-            <label className="font-semibold whitespace-nowrap">Sort:</label>
+            <label className="font-semibold">Sort:</label>
             <Select onChange={handleChange} value={sidebar.sort} id="sort">
               <option value="desc">Latest</option>
               <option value="asc">Oldest</option>
@@ -128,16 +131,16 @@ export default function Search() {
           </div>
 
           <div className="flex items-center gap-2">
-            <label className="font-semibold whitespace-nowrap">Category:</label>
+            <label className="font-semibold">Category:</label>
             <Select
               onChange={handleChange}
               value={sidebar.category}
               id="category"
             >
               <option value="uncategorized">uncategorized</option>
-              <option value="Javascript">Javascript</option>
-              <option value="React.js">React.js</option>
-              <option value="Next.js">Next.js</option>
+              <option value="javascript">Javascript</option>
+              <option value="reactjs">React.js</option>
+              <option value="nextjs">Next.js</option>
             </Select>
           </div>
 
