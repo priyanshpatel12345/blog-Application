@@ -19,12 +19,7 @@ export default function UpdatePost() {
   const [file, setFile] = useState(null);
   const [uploadFileProgress, setUploadFileProgress] = useState(null);
   const [uploadFileError, setUploadFileError] = useState(null);
-  const [formData, setFormData] = useState({
-    title: "",
-    category: "",
-    content: "",
-    image: "",
-  });
+  const [formData, setFormData] = useState({});
   const [publishError, setPublishError] = useState(null);
   const navigate = useNavigate();
   const { postId } = useParams();
