@@ -31,7 +31,7 @@ export default function UpdatePost() {
       const res = await fetch(`/api/post/getposts?postId=${postId}`);
 
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
       if (!res.ok) {
         console.log(data.message);
         setPublishError(data.message);
@@ -93,7 +93,7 @@ export default function UpdatePost() {
     e.preventDefault();
     try {
       const response = await fetch(
-        `/api/post/updatepost/${formData._id}/${currentUser._id}`,
+        `/api/post/updatepost/${postId}/${currentUser._id}`,
         {
           method: "PUT",
           headers: {
@@ -106,20 +106,17 @@ export default function UpdatePost() {
       const data = await response.json();
 
       if (!response.ok) {
-        setPublishError("Something went Wrong");
+        setPublishError(data.message);
+        return;
       } else {
         setPublishError(null);
         navigate(`/post/${data.slug}`);
       }
-
-      if (data.success === false) {
-        setPublishError(data.message);
-        return;
-      }
     } catch (error) {
-      setPublishError(error.message);
+      setPublishError("something went wrong");
     }
   };
+
   return (
     <div className=" p-5 max-w-3xl mx-auto min-h-screen ">
       <h1 className="text-center font-semibold text-3xl my-7 text-black dark:text-white ">
