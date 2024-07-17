@@ -65,7 +65,7 @@ function SignUp() {
               <Label value="Your username" />
               <TextInput
                 type="text"
-                placeholder="username"
+                placeholder="example:jack123 (username must be 7 character)"
                 id="username"
                 onChange={handleInput}
               />
