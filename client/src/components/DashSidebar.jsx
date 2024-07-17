@@ -10,12 +10,14 @@ import {
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { signOutSuccess } from "../app/user/userSlice.js";
 
 export default function DashSidebar() {
   const location = useLocation();
   const [tab, setTab] = useState("");
   const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const tabFromUrl = urlParams.get("tab");
@@ -23,6 +25,24 @@ export default function DashSidebar() {
       setTab(tabFromUrl);
     }
   }, [location.search]);
+
+  const handleSignOut = async (req, res) => {
+    try {
+      const res = await fetch("/api/user/signout", {
+        method: "POST",
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        dispatch(signOutSuccess());
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <Sidebar className="w-full md:w-56">
@@ -92,9 +112,15 @@ export default function DashSidebar() {
             </Link>
           )}
 
-          <Sidebar.Item icon={HiArrowCircleRight} className="cursor-pointer">
-            Sign Out
-          </Sidebar.Item>
+          <Link onClick={handleSignOut}>
+            <Sidebar.Item
+              icon={HiArrowCircleRight}
+              className="cursor-pointer"
+              as="div"
+            >
+              Sign Out
+            </Sidebar.Item>
+          </Link>
         </Sidebar.ItemGroup>
       </Sidebar.Items>
     </Sidebar>

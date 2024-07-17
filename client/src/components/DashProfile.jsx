@@ -285,7 +285,6 @@ export default function DashProfile() {
       <div>
         {dataUpdateSuccess && (
           <Alert color="success" className="mt-5">
-            {" "}
             {dataUpdateSuccess}
           </Alert>
         )}
